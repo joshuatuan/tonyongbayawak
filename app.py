@@ -245,6 +245,17 @@ def display_forecast(forecast, range):
     fig.update_xaxes(griddash='dash', gridwidth=1, gridcolor='#535566')
     fig.update_yaxes(griddash='dash', gridwidth=1, gridcolor='#535566')
     
+    fig.add_trace(go.Scatter(x=forecast.DATE, 
+                         y=forecast['ma'], 
+                         opacity=0.7, 
+                         line=dict(color='orange', width=3), 
+                         name='8d MA'))
+    fig.add_trace(go.Scatter(x=forecast.DATE, 
+                         y=forecast['ma4'], 
+                         opacity=0.7, 
+                         line=dict(color='red', width=2), 
+                         name='4d MA'))
+    
 
     fig.add_trace(go.Scatter(x=forecast.DATE, 
                              y=forecast['ma'].head(894), 
