@@ -234,7 +234,9 @@ def display_forecast(forecast, range):
     st.title("AXS Forecasted Price")
     st.subheader(range_str)
 
-
+    
+    forecast["ma"] = forecast.lstm_default.rolling(window=300).mean()
+    forecast["ma4"] = forecast.lstm_default.rolling(window=100).mean()
    
 
     fig = go.Figure()
@@ -243,6 +245,18 @@ def display_forecast(forecast, range):
     fig.update_xaxes(griddash='dash', gridwidth=1, gridcolor='#535566')
     fig.update_yaxes(griddash='dash', gridwidth=1, gridcolor='#535566')
     
+
+    fig.add_trace(go.Scatter(x=forecast.DATE, 
+                             y=forecast['ma'].head(894), 
+                             opacity=0.7, 
+                             line=dict(color='orange', width=3), 
+                             name='8d Moving Avearge'))
+    fig.add_trace(go.Scatter(x=forecast.DATE, 
+                             y=forecast['ma4'].head(894), 
+                             opacity=0.7, 
+                             line=dict(color='red', width=2), 
+                             name='4d Moving Avearge'))
+
     for month in forecast_months[:3]:
         fig.add_annotation(
         x=month.DATE[month.lstm_default.idxmin()],
